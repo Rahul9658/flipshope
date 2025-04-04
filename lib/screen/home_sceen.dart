@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../view_model/provider_class.dart';
+import 'bottom_nav_bar.dart';
 class HomeSceen extends StatefulWidget {
   const HomeSceen({super.key});
   @override
@@ -162,7 +163,7 @@ class _HomeSceenState extends State<HomeSceen> {
 
             ],
         ),
-      )
+      ),
       //
      //  body: Consumer<StoreProvider>(builder: (context ,storeVale ,child){
      //      if(storeVale.isLoading){
@@ -193,6 +194,7 @@ class _HomeSceenState extends State<HomeSceen> {
      //     });
      //  }
      // )
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

@@ -85,5 +85,26 @@ class StoreProvider with ChangeNotifier{
   }
 
 
+  Future<void> mobileSignUp(String phone) async {
+    try {
+      Map<String, dynamic> params = {"mobile": phone};
+
+      final response = await http.post(
+        Uri.parse("https://flipshope.com/api/user/auth/sendmobotp"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(params),
+      );
+
+      if (response.statusCode == 200) {
+        print("OTP sent successfully: ${response.body}");
+      } else {
+        print("Failed to send OTP: ${response.statusCode} - ${response.body}");
+      }
+    } catch (e) {
+      print("Error sending OTP: $e");
+    }
+  }
+
+
 
 }
