@@ -19,7 +19,6 @@ class _OtpScreenState extends State<OtpScreen> {
         "mobile": widget.mobileNumber,
         "otp":otpController.text,
       };
-
       final response = await http.post(
         Uri.parse("https://flipshope.com/api/user/auth/otplogin"),
         headers: {"Content-Type": "application/json"},

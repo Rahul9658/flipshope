@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1056830894171",
+    "project_id": "chat-bb867",
+    "storage_bucket": "chat-bb867.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056830894171:android:bbf7e0da333ccabd324f7e",
+        "android_client_info": {
+          "package_name": "com.example.shoes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxh7G_ERUa2oXRFSwUSJHhHu2VVT5RRZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
