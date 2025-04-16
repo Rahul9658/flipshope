@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1056830894171",
-    "project_id": "chat-bb867",
-    "storage_bucket": "chat-bb867.firebasestorage.app"
+    "project_number": "436140851506",
+    "project_id": "fir-78363",
+    "storage_bucket": "fir-78363.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1056830894171:android:bbf7e0da333ccabd324f7e",
+        "mobilesdk_app_id": "1:436140851506:android:082879d49e61b19fb0d72b",
         "android_client_info": {
           "package_name": "com.example.shoes"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAxh7G_ERUa2oXRFSwUSJHhHu2VVT5RRZI"
+          "current_key": "AIzaSyDRWOPULoC2t4cUIHHZfhb4mFQflq_2rdM"
         }
       ],
       "services": {

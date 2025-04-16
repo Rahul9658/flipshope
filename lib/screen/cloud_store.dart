@@ -6,6 +6,8 @@ import 'package:shoes/utils/appcolor.dart';
 import 'package:shoes/utils/customeTextfield.dart';
 import 'package:shoes/utils/custome_container_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'fetch_data_screen.dart';
 class CloudStore extends StatefulWidget {
   const CloudStore({super.key});
 
@@ -32,11 +34,10 @@ class _CloudStoreState extends State<CloudStore> {
         textColor: Colors.white,
       );
 
-      // Clear form
-      // nameController.clear();
-      // fullNameController.clear();
-      // emailController.clear();
-      // ageController.clear();
+      nameController.clear();
+      fullNameController.clear();
+      emailController.clear();
+      ageController.clear();
 
     }catch(e){
       throw Exception("Lode data Failed");
@@ -90,6 +91,7 @@ class _CloudStoreState extends State<CloudStore> {
               GestureDetector(
                 onTap: (){
                   adduserData();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>FetchDataScreen()));
                 },
                 child: CustomeButton(
                   height: MediaQuery.of(context).size.height*0.06,

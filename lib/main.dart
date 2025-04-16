@@ -104,6 +104,9 @@ import 'package:shoes/screen/cloud_store.dart';
 import 'package:shoes/screen/splash_screen.dart';
 import 'package:shoes/view_model/auth_provider.dart';
 
+import 'auth/login_screen.dart';
+import 'chat/login.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -118,7 +121,7 @@ class Home extends StatelessWidget {
     return ChangeNotifierProvider(create: (_)=>AuthProviderdddd(),
     child:  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CloudStore(),
+      home: LoginScreen1(),
 
     ),
 
