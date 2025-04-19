@@ -98,19 +98,29 @@
 
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoes/routie/my_routes.dart';
 import 'package:shoes/screen/cloud_store.dart';
+import 'package:shoes/screen/notifi_screen.dart';
 import 'package:shoes/screen/splash_screen.dart';
 import 'package:shoes/view_model/auth_provider.dart';
 
 import 'auth/login_screen.dart';
-import 'chat/login.dart';
-
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  final data = message.data; // Notification data
+  await NotificationServices().showLocalNotification(message);
+  print("notification data is :::$data");
+  print('A notif shown when the app is closed! ${message.notification}');
+  print('A bg message just showed up : ${message.messageId}');
+  // NotificationServicesssssss().saveEventDataList(data);
+  // Notification_Service().saveEventDataList(data);
+}
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(Home());
 }
 class Home extends StatelessWidget {
@@ -119,10 +129,10 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (_)=>AuthProviderdddd(),
-    child:  MaterialApp(
+    child:  const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen1(),
-
+      initialRoute: appRoutes.loginScreen,
+      onGenerateRoute: appRoutes.generateRoute,
     ),
 
     );

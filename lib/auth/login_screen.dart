@@ -4,11 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shoes/auth/signup_screen.dart';
 import 'package:shoes/screen/home_sceen.dart';
+import 'package:shoes/screen/notifi_screen.dart';
 import 'package:shoes/utils/appcolor.dart';
 import 'package:shoes/utils/customeTextfield.dart';
 import 'package:shoes/utils/custome_container_button.dart';
 import 'package:shoes/view_model/auth_provider.dart';
 
+import '../screen/chat_home_screen.dart';
 import '../screen/cloud_store.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,12 +27,21 @@ class _LoginScreenState extends State<LoginScreen> {
          email:emailController.text,
          password: passwordController.text,
        );
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>CloudStore()));
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatHomeScreen()));
      }
      catch(e){
        throw Exception("Failed login ");
      }
    }
+   NotificationServices notificationServices = NotificationServices();
+
+   @override
+  void initState() {
+    super.initState();
+    notificationServices.requestServices();
+    notificationServices.getDeviceToken();
+    notificationServices.firebaseBacgroundMesages();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -33,7 +33,6 @@ class _FetchDataScreenState extends State<FetchDataScreen> {
           builder: (context ,snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
               return const Center(child: CircularProgressIndicator());
-              
             }
             if(snapshot.hasError){
               return Center(child: Text("Sothing Worring"));
@@ -59,12 +58,9 @@ class _FetchDataScreenState extends State<FetchDataScreen> {
                       Text("Email: ${user['email'] ?? 'No Name'}",style: GoogleFonts.roboto(fontWeight: FontWeight.w600,fontSize: 16),),
                       const SizedBox(height: 20,),
                       Text("Age: ${user['age'] ?? 'No Name'}",style: GoogleFonts.roboto(fontWeight: FontWeight.w600,fontSize: 16),),
-
                     ],
-
                   ),
                 );
-
 
             });
             
