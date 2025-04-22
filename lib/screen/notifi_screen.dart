@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   // void initializedNotification(BuildContext context,
   //     RemoteMessage message) async {
@@ -24,16 +23,6 @@ class NotificationServices {
   //       onDidReceiveNotificationResponse: (payload) {}
   //   );
   // }
-
-  void firebaseBacgroundMesages() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(message.notification!.title.toString());
-      showLocalNotification(message);
-    });
-  }
-
-
-
   // Future<void> showNotification(RemoteMessage messages) async {
   //   AndroidNotificationChannel channel = AndroidNotificationChannel(
   //     Random.secure().nextInt(100000).toString(),
@@ -71,17 +60,11 @@ class NotificationServices {
   //     );
   //   });
   // }
-
-
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   Future<void> showLocalNotification(RemoteMessage message) async {
-    const AndroidInitializationSettings androidInit =
-    AndroidInitializationSettings('@mipmap/ic_launcher'); // Make sure this icon exists
+    const AndroidInitializationSettings androidInit = AndroidInitializationSettings('@mipmap/ic_launcher'); // Make sure this icon exists
 
-    const InitializationSettings initSettings =
-    InitializationSettings(android: androidInit);
+    const InitializationSettings initSettings = InitializationSettings(android: androidInit);
 
     await flutterLocalNotificationsPlugin.initialize(initSettings);
 
@@ -93,8 +76,16 @@ class NotificationServices {
       priority: Priority.high,
       playSound: true,
     );
-    NotificationDetails platformDetails =
-    NotificationDetails(android: androidDetails);
+     DarwinNotificationDetails darwinNotificationDetails = const DarwinNotificationDetails(
+       presentSound: true,
+       presentBadge: true,
+       presentAlert: true,
+     );
+     NotificationDetails platformDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: darwinNotificationDetails,
+
+    );
     await flutterLocalNotificationsPlugin.show(
       0,
       message.notification?.title ?? 'No Title',
@@ -102,8 +93,18 @@ class NotificationServices {
       platformDetails,
     );
   }
-
-
+  void firebaseBacgroundMesages() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print(message.notification!.title.toString());
+      showLocalNotification(message);
+    });
+  }
+  void firebaseBackgroundMessages(Function (RemoteMessage) onMessageReceived) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Foreground message received: ${message.notification?.title}");
+      onMessageReceived(message); // Call the function to update count
+    });
+  }
 
   void requestServices() async {
     NotificationSettings settings = await messaging.requestPermission(
@@ -124,11 +125,12 @@ class NotificationServices {
       print("user permission failed");
     }
   }
-
   Future<String> getDeviceToken() async {
     String? token = await messaging.getToken();
     print("device token in Flutter*****: ${token}");
     return token!;
+  }
+  Future<void> RedirectNotification() async{
   }
 
 }

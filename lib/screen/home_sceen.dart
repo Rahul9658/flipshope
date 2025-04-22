@@ -93,8 +93,8 @@ class _HomeSceenState extends State<HomeSceen> {
 
                 ],),
               ),
-               Padding(
-                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
+               const Padding(
+                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: [
@@ -194,7 +194,6 @@ class _HomeSceenState extends State<HomeSceen> {
      //     });
      //  }
      // )
-      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

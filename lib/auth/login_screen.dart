@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ import 'package:shoes/view_model/auth_provider.dart';
 
 import '../screen/chat_home_screen.dart';
 import '../screen/cloud_store.dart';
+import '../screen/messages_show.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -27,20 +29,29 @@ class _LoginScreenState extends State<LoginScreen> {
          email:emailController.text,
          password: passwordController.text,
        );
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatHomeScreen()));
      }
      catch(e){
        throw Exception("Failed login ");
      }
    }
    NotificationServices notificationServices = NotificationServices();
+  int notificationCount = 0;
+  List<RemoteMessage> messages = [];
 
-   @override
+
+  @override
   void initState() {
     super.initState();
     notificationServices.requestServices();
     notificationServices.getDeviceToken();
     notificationServices.firebaseBacgroundMesages();
+    notificationServices.firebaseBackgroundMessages((message) {
+      setState(() {
+        messages.add(message);
+        notificationCount++;
+      });
+
+    });
   }
 
   @override
@@ -51,6 +62,54 @@ class _LoginScreenState extends State<LoginScreen> {
         toolbarHeight: 70,
         title: Text("Login Screen",style: GoogleFonts.roboto(fontWeight: FontWeight.w600,fontSize: 18,color: AppColor.white),),
         backgroundColor: Color(0xFF2D63DF),
+        automaticallyImplyLeading: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Stack(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MessagesShow(messages: messages),
+                      ),
+                    );
+                    setState(() {
+                      notificationCount = 0; // Clear count on open (optional)
+                    });
+                  },
+                  icon: Icon(Icons.notifications, color: Colors.white, size: 30),
+                ),
+                if (notificationCount > 0)
+                  Positioned(
+                    right: 6,
+                    top: 6,
+                    child: Container(
+                      padding: EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 18,
+                        minHeight: 18,
+                      ),
+                      child: Text(
+                        '$notificationCount',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
 
       ),
       body: Padding(

@@ -105,10 +105,8 @@ Future<LoginModel> loginRepo(
 
 late LoginModel  loginModel;
 bool isLoading = false;
-
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
-
 login(context){
   loginRepo(
     context: context,
@@ -124,7 +122,6 @@ login(context){
       isLoading==true;
     }
     if(loginModel.userData!.isVerified==true){
-
     }
 
   }

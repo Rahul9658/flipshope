@@ -103,9 +103,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoes/routie/my_routes.dart';
 import 'package:shoes/screen/cloud_store.dart';
+import 'package:shoes/screen/home_sceen.dart';
 import 'package:shoes/screen/notifi_screen.dart';
 import 'package:shoes/screen/splash_screen.dart';
 import 'package:shoes/view_model/auth_provider.dart';
+import 'package:shoes/view_model/provider_class.dart';
 
 import 'auth/login_screen.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -129,10 +131,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (_)=>AuthProviderdddd(),
-    child:  const MaterialApp(
+    child:  MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: appRoutes.loginScreen,
-      onGenerateRoute: appRoutes.generateRoute,
+      // initialRoute: appRoutes.loginScreen,
+      // onGenerateRoute: appRoutes.generateRoute,
+      home: LoginScreen(),
     ),
 
     );
