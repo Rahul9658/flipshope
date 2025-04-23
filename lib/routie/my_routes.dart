@@ -12,7 +12,7 @@ class appRoutes {
       case loginScreen:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
        case homeScreen:
-        return MaterialPageRoute(builder: (_) => const ChatScreen(otherUserId: '',));
+        // return MaterialPageRoute(builder: (_) => const ChatScreen(otherUserId: '',));
 
       default:
         return CupertinoPageRoute(builder: (_) => UndefinedRouteScreen(routeName: settings.name!));

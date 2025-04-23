@@ -54,40 +54,47 @@ class _SignupScreenState extends State<SignupScreen> {
 
   File? _image;
   final picker = ImagePicker();
-
   Future pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
       });
     }
   }
+ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  Future<UserCredential> registerbody()async{
+    try {
+      UserCredential userCredential =
+      await firebaseAuth.createUserWithEmailAndPassword(email:emailController.text,
+          password: passwordController.text);
+      firebaseFirestore.collection("data").doc(userCredential.user!.uid).set({
+        'uid':userCredential.user!.uid,
+         'name':usernameController.text,
+         'email':emailController.text,
+      });
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+      return userCredential;
 
+    }
+
+    catch(e){
+      throw Exception(e);
+
+    }
+ }
   Future<void> signup() async {
     try {
       final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      String? imageUrl;
-      if (_image != null) {
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('profileImages')
-            .child('${userCredential.user!.uid}.jpg');
-        await ref.putFile(_image!);
-        imageUrl = await ref.getDownloadURL();
-      }
-      await FirebaseFirestore.instance
-          .collection('shoppes')
-          .doc(userCredential.user?.uid)
-          .set({
+      await FirebaseFirestore.instance.collection('shoppes').doc(userCredential.user?.uid).set({
         'email': userCredential.user?.email,
         'uid': userCredential.user?.uid,
         'username': usernameController.text.trim(),
-        'profileImage': imageUrl ?? '', // store URL or empty if no image
+        // 'profileImage': imageUrl ?? '', // store URL or empty if no image
         'createdAt': Timestamp.now(),
       });
 
@@ -204,8 +211,8 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 50,),
               GestureDetector(
                 onTap: (){
-                  signup();
-                },
+                  registerbody();
+                  },
                 child: CustomeButton(
                   height: MediaQuery.of(context).size.height*0.06,
                   width: MediaQuery.of(context).size.width,

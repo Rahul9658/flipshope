@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../view_model/provider_class.dart';
 import 'bottom_nav_bar.dart';
 class HomeSceen extends StatefulWidget {
@@ -24,7 +23,6 @@ class _HomeSceenState extends State<HomeSceen> {
         title: Text("Flipshope",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 24,color: Colors.white),),
         backgroundColor: Color(0xFF2158D7),
       ),
-
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,8 +75,6 @@ class _HomeSceenState extends State<HomeSceen> {
                             ),
                           ],
                         );
-                  
-                  
                       }),
                 );
               }),
@@ -158,9 +154,6 @@ class _HomeSceenState extends State<HomeSceen> {
                       }),
                 );
               }),
-
-
-
             ],
         ),
       ),

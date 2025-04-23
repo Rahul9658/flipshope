@@ -1,53 +1,67 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../utils/appcolor.dart';
-import 'chat_screen.dart';
 
-class ChatHomeScreen extends StatelessWidget {
+import 'chat_screen.dart';
+class ChatHomeScreen extends StatefulWidget {
+  const ChatHomeScreen({super.key});
+
+  @override
+  State<ChatHomeScreen> createState() => _ChatHomeScreenState();
+}
+
+class _ChatHomeScreenState extends State<ChatHomeScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ChatPage",style: GoogleFonts.roboto(fontSize: 18,fontWeight: FontWeight.w600,color: AppColor.white),),
+        backgroundColor: Colors.indigo,
         toolbarHeight: 70,
-        backgroundColor: Color(0xFF2D63DF),
+        title: Text("HomeScreen"),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("shoppes").snapshots(),
-        builder: (context, snapshots) {
-          if (snapshots.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshots.hasError) {
-            return Center(child: Text("Something went wrong"));
-          }
-
-          if (!snapshots.hasData || snapshots.data!.docs.isEmpty) {
-            return Center(child: Text("No data found"));
-          }
-
-          final userData = snapshots.data!.docs;
-
-          return ListView.builder(
-            itemCount: userData.length,
-            itemBuilder: (context, index) {
-              final user = userData[index].data() as Map<String, dynamic>;
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor:Color(0xFF2D63DF) ,
-                  child: Text(user['username'][0],style: TextStyle(color: AppColor.white),),
-                ),
-                title: Text(user["username"] ?? "No Email",style: GoogleFonts.roboto(fontSize: 16,fontWeight: FontWeight.w600),),
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen(otherUserId: user['uid'])));
-                },
-              );
-            },
-          );
-        },
-      ),
+      body: _buildListofItem(),
     );
   }
+  Widget _buildListofItem() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection("data").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text('No data found'));
+        }
+
+        return ListView(
+          children: snapshot.data!.docs
+              .map<Widget>((doc) => _buildItem(doc))
+              .toList(),
+        );
+      },
+    );
+  }
+
+
+  Widget _buildItem(DocumentSnapshot document){
+    Map<String , dynamic> data = document.data()! as Map<String ,dynamic>;
+
+    if(_auth.currentUser!.displayName!= data['name']){
+      return ListTile(
+        title: Text(data['name']),
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen(recivedName: data['name'],
+           recivedUserId: data['uid'],
+          )));
+        },
+      );
+
+    }
+    else{
+      return Container();
+    }
+  }
+
 }

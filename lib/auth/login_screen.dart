@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,28 @@ class _LoginScreenState extends State<LoginScreen> {
    NotificationServices notificationServices = NotificationServices();
   int notificationCount = 0;
   List<RemoteMessage> messages = [];
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  Future<UserCredential> Loginbody()async{
+    try {
+      UserCredential userCredential =
+      await firebaseAuth.signInWithEmailAndPassword(email:emailController.text, password: passwordController.text);
+      firebaseFirestore.collection("data").doc(userCredential.user!.uid).set({
+        'uid':userCredential.user!.uid,
+        'email':emailController.text,
+      },SetOptions(merge: true)
+
+      );
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatHomeScreen()));
+      return userCredential;
+
+    }
+
+    catch(e){
+      throw Exception(e);
+
+    }
+  }
 
 
   @override
@@ -146,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 50,),
             GestureDetector(
               onTap: (){
-                login();
+                Loginbody();
               },
               child: CustomeButton(
                 height: MediaQuery.of(context).size.height*0.06,

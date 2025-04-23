@@ -33,8 +33,6 @@ class StoreProvider with ChangeNotifier{
       isLoading= false;
       notifyListeners();
       throw Exception('Failed to load store data: $e');
-
-
     }
 
   }
@@ -104,6 +102,7 @@ class StoreProvider with ChangeNotifier{
       print("Error sending OTP: $e");
     }
   }
+
 
 
 
