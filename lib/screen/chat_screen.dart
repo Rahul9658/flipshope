@@ -240,7 +240,7 @@ class _ChatScreenState extends State<ChatScreen> {
        alignment: alignment,
        child: Column(
          children: [
-           Text(data['recivedName']),
+           // Text(data['recivedName']),
 
            Text(data['messages']),
            

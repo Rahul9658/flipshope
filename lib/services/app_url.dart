@@ -7,6 +7,7 @@ class ApiUrl{
   static const String  lootDeals ="https://flipshope.com/api/prices/getrecentpricedrop";
   static const String recientPrice="https://flipshope.com/api/prices/getrecentpricedrop";
   static const String login="https://flipshope.com/api/prices/getrecentpricedrop";
+  static const String updateProfile="https://flipshope.com/api/prices/getrecentpricedrop";
 }
 
 class Helpers {

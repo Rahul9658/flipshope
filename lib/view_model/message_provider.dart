@@ -10,7 +10,8 @@ class MessageProvider with ChangeNotifier {
     final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final String currentUserName = _firebaseAuth.currentUser!.displayName.toString();
     final Timestamp timestamp =Timestamp.now();
-    MessagesModel neMessage = MessagesModel(senderid: currentUserId,
+    MessagesModel neMessage = MessagesModel(
+        senderid: currentUserId,
         recivedId: recivedId,
         messages: message,
         recivedName: currentUserName,
@@ -20,7 +21,8 @@ class MessageProvider with ChangeNotifier {
     List<String> ids = [currentUserId , recivedId];
      ids.sort();
      String chatroomId = ids.join();
-     await _firebaseFirestore.collection('chat_rooms').doc(chatroomId).collection('messages').add(neMessage.tomap());
+     await _firebaseFirestore.collection('chat_rooms').
+     doc(chatroomId).collection('messages').add(neMessage.tomap());
 }
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String userId , String otheruserId){
     List<String> ids = [userId ,otheruserId];

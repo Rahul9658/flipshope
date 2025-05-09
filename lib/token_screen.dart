@@ -2,11 +2,18 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import  'package:http/http.dart'as http;
 import 'package:shoes/services/app_url.dart';
 import 'model/user_model.dart';
+
+import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 
 Future<Map<String, String>> getAuthHeader(BuildContext context) async {
   final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -22,6 +29,7 @@ Future<Map<String, String>> getAuthHeader(BuildContext context) async {
       HttpHeaders.authorizationHeader: 'Bearer ${token.replaceAll('\"', '')}',
   };
 }
+TextEditingController phoneController = TextEditingController();
 
 //
 // Future<void> fetchUserProfile(BuildContext context) async {
@@ -112,7 +120,7 @@ login(context){
     context: context,
     email: emailController.text,
     password: passwordController.text,
-  ).then((value) async{
+    ).then((value) async{
     loginModel = value;
     if(value.status==true){
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -127,6 +135,115 @@ login(context){
   }
   );
 }
+
+
+File? _image;
+final picker = ImagePicker();
+Future pickImage() async {
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  if (pickedFile != null) {
+
+      _image = File(pickedFile.path);
+
+  }
+}
+Future<Uint8List?> profileata1() async {
+  if (_image == null) {
+    log("No image selected.");
+    return null;
+  }
+
+  Uint8List imageBytes = await _image!.readAsBytes();
+  log("Image bytes length: ${imageBytes.length}");
+  return imageBytes;
+}
+
+
+// Future<LoginModel> updateProfileRepo({
+//  required  BuildContext context,
+//   Uint8List? profileImage,
+//   Map<String, dynamic>? additionalData, // New parameter to pass additional key-value pairs
+// }) async {
+//   OverlayEntry loader = Helpers.overlayLoader(context);
+//   Overlay.of(context).insert(loader);
+//
+//   var uri = Uri.parse(ApiUrl.updateProfile); // Replace with the actual API endpoint
+//
+//   var request = http.MultipartRequest('POST', uri);
+//   request.headers.addAll(await getAuthHeader(context),
+//       body: jsonEncode(map)
+//   );
+//
+//
+//
+//   // Adding additional data fields if provided
+//   if (additionalData != null) {
+//     additionalData.forEach((key, value) {
+//       request.fields[key] = value.toString(); // Convert value to String if necessary
+//     });
+//   }
+//
+//   // Adding profile image if provided
+//   if (profileImage != null) {
+//     request.files.add(http.MultipartFile.fromBytes(
+//       'profile_image',
+//       profileImage,
+//       contentType: MediaType('image', 'jpeg'),
+//       filename: 'profile_image.jpg',
+//     ));
+//   } else {
+//     log('No profile image provided.');
+//   }
+//
+//
+//     http.Response response = await http.Response.fromStream(await request.send());
+//     log("Update Profile Response: ${response.body}");
+//
+//     if (response.statusCode == 200) {
+//       Helpers.hideLoader(loader);
+//       print(jsonDecode(response.body));
+//       return LoginModel.fromJson(jsonDecode(response.body));
+//       // Handle success response
+//       // showToast("Profile updated successfully.");
+//     } else {
+//       Helpers.hideLoader(loader);
+//       print(jsonDecode(response.body));
+//       return LoginModel(
+//         message: jsonDecode(response.body)["message"],
+//       );
+//       // showToast("Failed to update profile: ${jsonDecode(response.body)['message']}");
+//     }
+//
+//   // catch (e) {
+//   //   Helpers.hideLoader(loader);
+//   //   print('Error: $e');
+//   //   // showToast("An error occurred while updating the profile.");
+//   // }
+// }
+
+
+// void profileata(BuildContext context) async {
+//   Map<String, dynamic> extraData = {
+//     'phone_number': phoneController.text,
+//     'address': '123 Main Street',
+//     'gender': 'Female',
+//   };
+//
+//   Uint8List? profileImage = await profileata1();
+//
+//   if (profileImage == null) {
+//     log("No image to upload");
+//     return;
+//   }
+//
+//   LoginModel result = await updateProfileRepo(
+//     context: context,
+//     profileImage: profileImage,
+//     additionalData: extraData,
+//   );
+//
+//   log("Profile update result: ${result.message}");
+// }
 
 
 // login(context) {
