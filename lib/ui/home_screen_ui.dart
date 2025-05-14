@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoes/ui/shared_preference_data.dart';
+import 'package:shoes/utils/customeTextfield.dart' show CustomeTextfield;
+import 'package:shoes/utils/custome_container_button.dart' show CustomeButton;
+import 'package:shoes/view_model/shared_pref_screen.dart';
+
 class HomeScreenUi extends StatefulWidget {
   const HomeScreenUi({super.key});
 
@@ -8,54 +14,78 @@ class HomeScreenUi extends StatefulWidget {
 
 class _HomeScreenUiState extends State<HomeScreenUi> {
   @override
+  void initState() {
+    context.read<SharedProvider>().lodedData();
+    super.initState();
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final sharedProvider = context.watch<SharedProvider>();
     return Scaffold(
-      backgroundColor: Colors.white,
-
-      body: Column(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topCenter,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 70,
+        backgroundColor: const Color(0xFF6B38FB),
+        title: const Text("Shared Preference"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              Container(
-                height: 170,
-                width: MediaQuery.of(context).size.width,
-                color: Color(0xFF6B38FB),
+              const SizedBox(height: 20,),
+              CustomeTextfield(
+               controller:sharedProvider.nameController ,
+                hintText: "Enter name",
               ),
-              Positioned(
-                bottom: -180,
-                top: 0, // Adjust as needed
-                // left: MediaQuery.of(context).size.width / 2 - 75, // Center horizontally (150 / 2)
-                child: Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Color(0xFF6B38FB),
+              const SizedBox(height: 20,),
+              CustomeTextfield(
+                controller:sharedProvider.fullNameController ,
+                hintText: "Enter fullName",
+              ),
+              const SizedBox(height: 20,),
+              CustomeTextfield(
+                controller:sharedProvider.emailController ,
+                hintText: "Enter email",
+              ),
+              const SizedBox(height: 20,),
+              CustomeTextfield(
+                controller:sharedProvider.passwordController,
+                hintText: "Enter password",
+              ),
 
-                    )
-                  ),
+              const SizedBox(height: 20,),
+              Text("name----------------${sharedProvider.name}"),
+              Text("name----------------${sharedProvider.fullName}"),
+              Text("name----------------${sharedProvider.email}"),
+              Text("name----------------${sharedProvider.password}"),
+
+              const SizedBox(height: 30,),
+              GestureDetector(
+                onTap: () async{
+                   sharedProvider.saveFiterData();
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SharedPreferenceData()));
+                },
+                child: CustomeButton(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Center(child: Text("Save",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.white),)),
                 ),
-              ),
-              
+              )
+              //     SizedBox(height: context.height*0.01,)
             ],
           ),
-          SizedBox(height: 90,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Flipkart Deals",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-              IconButton(onPressed: (){}, icon: Icon(Icons.edit)),
-
-            ],
-          )
-         ],
-      )
-
-
+        ),
+      ),
     );
   }
 }
+
+

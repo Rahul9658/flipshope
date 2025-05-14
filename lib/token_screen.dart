@@ -58,6 +58,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
 Future<void> fetchUserProfile(BuildContext context) async {
   final url = Uri.parse('https://your-api.com/profile');
   final headers = await getAuthHeader(context);

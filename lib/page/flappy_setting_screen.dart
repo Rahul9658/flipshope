@@ -52,9 +52,8 @@ class _FlappySettingScreenState extends State<FlappySettingScreen> {
                     SizedBox(height: 10,),
                     const FlappyBirdScreen(),
                     SizedBox(height: 15,),
-
                     const FlappyThemesScreen(),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     const FlappyDificulityScreen(),
                     SizedBox(height: 15,),
                     GestureDetector(

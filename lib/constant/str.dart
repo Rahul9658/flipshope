@@ -5,5 +5,5 @@ class str {
   static const String flappyStartScreen ="flappyStartScreen";
   static const String  flappySplashScreen = "flappySplashScreen";
   static const String setting = "setting";
-  static const String birds = "assets/images/pics/blue.png";
+  static  String birds = "assets/images/pics/blue.png";
 }

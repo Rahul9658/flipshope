@@ -15,7 +15,7 @@ class AppGenerateRoute {
       case str.flappySplashScreen:
         return MaterialPageRoute(builder: (_)=> const FlappySplashScreen());
       case str.games:
-        return MaterialPageRoute(builder: (_)=> const FlappyPlayScreen());
+        return MaterialPageRoute(builder: (_)=> GamePage());
       case str.setting:
         return MaterialPageRoute(builder: (_)=> const FlappySettingScreen());
 
