@@ -1,0 +1,2 @@
+C:/Users/devan/StudioProjects/shoes/android/app/.cxx/RelWithDebInfo/4444201c/x86/CMakeFiles/edit_cache.dir
+C:/Users/devan/StudioProjects/shoes/android/app/.cxx/RelWithDebInfo/4444201c/x86/CMakeFiles/rebuild_cache.dir

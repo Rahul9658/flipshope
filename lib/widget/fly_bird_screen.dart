@@ -23,8 +23,8 @@ class BirdsButtion extends StatelessWidget{
     return AnimatedContainer(duration: const Duration(milliseconds:0 ),
       alignment: Alignment(0, (2 * yAxis + height) / (2 - width)),
       child: Image.asset(str.birds,
-        height: size.height*groupProvider.birdHeight,
-        width: size.width*groupProvider.birdWidth,
+        height: size.height*birdHeight,
+        width: size.width*birdWidth,
         fit: BoxFit.cover,
 
       ),

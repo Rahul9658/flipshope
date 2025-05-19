@@ -18,13 +18,10 @@ class _HomeScreenUiState extends State<HomeScreenUi> {
     context.read<SharedProvider>().lodedData();
     super.initState();
   }
-
   @override
   void dispose(){
     super.dispose();
-
   }
-
   @override
   Widget build(BuildContext context) {
     final sharedProvider = context.watch<SharedProvider>();

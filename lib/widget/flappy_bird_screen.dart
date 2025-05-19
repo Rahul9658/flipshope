@@ -39,7 +39,6 @@ class _FlappyBirdScreenState extends State<FlappyBirdScreen> {
                write("bird", str.birds);
              },
                  child: Image.asset("assets/images/pics/bird.png",height: 75,width: 75,)),
-
           ],
         )
 

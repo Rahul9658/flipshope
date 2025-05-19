@@ -1,14 +1,14 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, avoid_unnecessary_containers, avoid_print
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoes/constant/background_theme.dart';
-import 'package:shoes/constant/const_screen.dart';
-import 'package:shoes/constant/str.dart' show str;
-import 'package:shoes/database/database_screen.dart' show write;
-import 'package:shoes/page/flappy_start_screen.dart' show FlappyStartScreen;
-import 'package:shoes/view_model/group_provider.dart' show GroupProvider;
-import 'package:shoes/widget/flappy_barrier_screen.dart' show Barrier;
-import 'package:shoes/widget/fly_bird_screen.dart';
+import 'package:shoes/view_model/group_provider.dart';
+import '../constant/const_screen.dart';
+import '../constant/str.dart';
+import '../database/database_screen.dart';
+import '../widget/flappy_barrier_screen.dart';
+import '../widget/fly_bird_screen.dart';
 
 class GamePage extends StatefulWidget {
   GamePage({Key? key}) : super(key: key);
@@ -16,30 +16,32 @@ class GamePage extends StatefulWidget {
   State<GamePage> createState() => _GamePageState();
 }
 class _GamePageState extends State<GamePage> {
-  List<String> frames = [];
   @override
   Widget build(BuildContext context) {
     final groupProvider = context.watch<GroupProvider>();
     return GestureDetector(
-      onTap: groupProvider.gameHasStarted ? groupProvider.jump : groupProvider.startGame,
+      onTap: gameHasStarted ? jump : startGame,
       child: Scaffold(
         body: Column(children: [
           Expanded(
             flex: 3,
             child: Container(
-              decoration: backgroundImages(str.images),
+              decoration:backgroundImages(str.images),
               child: Stack(
                 children: [
-                  BirdsButtion( groupProvider.yAxis , groupProvider.birdHeight, groupProvider.birdWidth),
+                  BirdsButtion(yAxis, birdWidth, birdHeight),
+                  // Tap to play text
                   Container(
                     alignment: Alignment(0, -0.3),
                     child: Text(
-                      groupProvider.gameHasStarted ? '' : 'TAP TO START', style: TextStyle(fontSize: 25,color: Colors.white, ),),
-                    ),
-                  Barrier(groupProvider.barrierHeight[0][0], groupProvider.barrierWidth, true, groupProvider.barrierX[0]),
-                  Barrier(groupProvider.barrierHeight[0][1], groupProvider.barrierWidth, false, groupProvider.barrierX[0]),
-                  Barrier(groupProvider.barrierHeight[1][0], groupProvider.barrierWidth, true, groupProvider.barrierX[1]),
-                  Barrier(groupProvider.barrierHeight[1][1], groupProvider.barrierWidth, false, groupProvider.barrierX[1]),
+                        gameHasStarted ? '' : 'TAP TO START', style: TextStyle(color:Colors.white),),
+                  ),
+                  Barrier(barrierHeight[0][0], barrierWidth, true,barrierX[0], ),
+                  Barrier(
+                      barrierHeight[0][1], barrierWidth,false, barrierX[0]),
+                  Barrier(barrierHeight[1][0], barrierWidth, true, barrierX[1],),
+                  Barrier(
+                      barrierHeight[1][1], barrierWidth, false, barrierX[1]),
                   Positioned(
                     top: 35,
                     right: 15,
@@ -49,13 +51,13 @@ class _GamePageState extends State<GamePage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            "Score : ${groupProvider.score}",
+                            "Score : $score",
                             style: TextStyle(
                                 color: Colors.yellow,
                                 fontSize: 30,
                                 fontFamily: "04B_19__"),
                           ), // Best TEXT
-                          // Text("Best : ${groupProvider.topScore}",
+                          // Text("Best : $topScore",
                           //     style: TextStyle(
                           //         color: Colors.yellow,
                           //         fontSize: 30,
@@ -77,69 +79,162 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  // Jump Function:
+  void jump() {
+    setState(() {
+      time = 0;
+      initialHeight = yAxis;
+    });
+  }
+  
+  bool barrierPassed0 = false;
+  bool barrierPassed1 = false;
 
+// In your startGame function, modify the main game loop
+  void startGame() {
+    gameHasStarted = true;
+    Timer.periodic(Duration(milliseconds: 35), (timer) {
+      height = gravity * time * time + velocity * time;
+      setState(() {
+        yAxis = initialHeight - height;
+      });
 
+      /* <  Barriers Movements  > */
+      setState(() {
+        if (barrierX[0] < screenEnd) {
+          barrierX[0] += screenStart;
+          // Reset the passed flag when barrier resets
+          barrierPassed0 = false;
+        } else {
+          barrierX[0] -= barrierMovement;
 
+          // Check if bird passed this barrier
+          if (!barrierPassed0 && barrierX[0] < birdWidth - barrierWidth) {
+            if (!birdIsDead()) {
+              barrierPassed0 = true;
+              setState(() {
+                score++;
+                if (score > topScore) {
+                  topScore = score;
+                }
+              });
+            }
+          }
+        }
+      });
+      setState(() {
+        if (barrierX[1] < screenEnd) {
+          barrierX[1] += screenStart;
+          barrierPassed1 = false;
+        } else {
+          barrierX[1] -= barrierMovement;
+          if (!barrierPassed1 && barrierX[1] < birdWidth - barrierWidth) {
+            if (!birdIsDead()) {
+              barrierPassed1 = true;
+              setState(() {
+                score++;
+                if (score > topScore) {
+                  topScore = score;
+                }
+              });
+            }
+          }
+        }
+      });
 
+      if (birdIsDead()) {
+        timer.cancel();
+        write("score", topScore);
+        _showDialog();
+      }
 
+      time += 0.032;
+    });
 
+    // Remove the score timer completely
+  }
 
-  // void _showDialog() {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         backgroundColor: Colors.white,
-  //         shape:
-  //         RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-  //         title: Text("..Oops", style: TextStyle(fontWeight: FontWeight.w500,color: Colors.blue[900],fontSize: 35),),
-  //         actionsPadding: EdgeInsets.only(right: 8, bottom: 8),
-  //         content: SizedBox(
-  //           height: MediaQuery.of(context).size.height / 2.5,
-  //           child: Column(
-  //             children: [
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Text("Score : $score", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: Colors.blue[900]),),
-  //                   Text("Best : $topScore",  style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.blue[900]),),
-  //                 ],
-  //               ),
-  //
-  //               SizedBox(
-  //                 width: 250,
-  //                 height: 300,
-  //                 child: FrameAnimation(),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: [
-  //           GestureDetector(
-  //             onTap: ()
-  //              {
-  //            resetGame();
-  //          Navigator.push(context,MaterialPageRoute(builder: (context)=>FlappyStartScreen()) );
-  //
-  //         },
-  //
-  //               child: Text("Home",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.grey,)
-  //
-  //               ),
-  //
-  //
-  //             // gameButton(() {
-  //             //   adManager.showRewardedInterstitialAd();
-  //             //
-  //             //   resetGame();
-  //             // }, "Try again", Colors.green),
-  //
-  //           )],
-  //       );
-  //     },
-  //   );
-  // }
+  /// Make sure the [Bird] doesn't go out screen & hit the barrier
+  bool birdIsDead() {
+    // Screen
+    if (yAxis > 1.26 || yAxis < -1.1) {
+      return true;
+    }
+
+    /// Barrier hitBox
+    for (int i = 0; i < barrierX.length; i++) {
+      if (barrierX[i] <= birdWidth &&
+          (barrierX[i] + (barrierWidth)) >= birdWidth &&
+          (yAxis <= -1 + barrierHeight[i][0] ||
+              yAxis + birdHeight >= 1 - barrierHeight[i][1])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void resetGame() {
+    Navigator.pop(context); // dismisses the alert dialog
+    setState(() {
+      yAxis = 0;
+      gameHasStarted = false;
+      time = 0;
+      score = 0;
+      initialHeight = yAxis;
+      barrierX[0] = 2;
+      barrierX[1] = 3.4;
+    });
+  }
+  // TODO: Alert Dialog with 2 options (try again, exit)
+  void _showDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          title: Text("..Oops", style: TextStyle(fontSize: 35,color: Colors.blue[900]),),
+          actionsPadding: EdgeInsets.only(right: 8, bottom: 8),
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height / 2.5,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Score : $score",style: TextStyle(color:  Colors.blue[900],fontSize: 20),),
+                    Text("Best : $score",style: TextStyle(color:  Colors.blue[900],fontSize: 20),),
+                  ],
+                ),
+                SizedBox(
+                  width: 250,
+                  height: 300,
+                  child: FrameAnimation(),
+                ),
+              ],
+            ),
+          ),
+          // actions: [
+          //   gameButton(() {
+          //     resetGame();
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => StartScreen(),
+          //         ));
+          //   }, "Home", Colors.grey),
+          //   gameButton(() {
+          //     adManager.showRewardedInterstitialAd();
+          //
+          //     resetGame();
+          //   }, "Try again", Colors.green),
+          // ],
+        );
+      },
+    );
+  }
 }
 
 class FrameAnimation extends StatefulWidget {

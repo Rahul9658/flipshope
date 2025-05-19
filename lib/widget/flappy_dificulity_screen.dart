@@ -25,7 +25,7 @@ class _FlappyDificulityScreenState extends State<FlappyDificulityScreen> {
           children: [
             GestureDetector(
               onTap: (){
-                write("level", groupProvider.barrierMovement);
+                write("level", barrierMovement);
               },
               child: Container(
                 height: size.height*0.06,
@@ -39,7 +39,7 @@ class _FlappyDificulityScreenState extends State<FlappyDificulityScreen> {
             ),
             GestureDetector(
               onTap: (){
-                write("level", groupProvider.barrierMovement);
+                write("level",barrierMovement);
               },
               child: Container(
                 height: size.height*0.06,
@@ -53,7 +53,7 @@ class _FlappyDificulityScreenState extends State<FlappyDificulityScreen> {
             ),
             GestureDetector(
               onTap: (){
-               var  levelData = write("level", groupProvider.barrierMovement);
+               var  levelData = write("level", barrierMovement);
                 print("Bar level ${levelData}");
               },
               child: Container(

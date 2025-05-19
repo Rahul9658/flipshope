@@ -66,7 +66,7 @@ class NotificationServices {
 
     await flutterLocalNotificationsPlugin.initialize(initSettings);
 
-    AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+    AndroidNotificationDetails androidDetails = const AndroidNotificationDetails(
       'channel_id',
       'channel_name',
       channelDescription: 'channel_description',

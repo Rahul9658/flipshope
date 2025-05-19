@@ -1,30 +1,13 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shoes/constant/const_screen.dart';
 import 'package:shoes/database/database_screen.dart' show write;
 class GroupProvider extends ChangeNotifier {
-  double yAxis = 0;
-  double time = 0;
-  double initialHeight = 0;
-  bool gameHasStarted = false;
-  double height = 0;
-  double gravity = -3.5;
-  double velocity = 0;
+
   bool barrierPassed0 = false;
   bool barrierPassed1 = false;
-  double barrierMovement = 0.05;
-  double birdWidth = 0.183;
-  double birdHeight = 0.183;
-  int score = 0;
-  int topScore = 0;
-  List<double> barrierX = [2, 4];
-  double barrierWidth = 0.4;
-  List<List<double>> barrierHeight = [
-    [0.6, 0.4],
-    [0.4, 0.6],
-  ];
-  double screenEnd = -1.9;
-  double screenStart = 3.5;
-
 
   void jump() {
     time = 0;
@@ -40,14 +23,12 @@ class GroupProvider extends ChangeNotifier {
       if (barrierX[0] < screenEnd) {
         barrierX[0] += screenStart;
         barrierPassed0 = false;
-        notifyListeners();
       } else {
         barrierX[0] -= barrierMovement;
         if (!barrierPassed0 && barrierX[0] < birdWidth - barrierWidth) {
           if (!birdIsDead()) {
             barrierPassed0 = true;
             score++;
-            notifyListeners();
             if (score > topScore) {
               topScore = score;
             }
@@ -58,17 +39,14 @@ class GroupProvider extends ChangeNotifier {
       if (barrierX[1] < screenEnd) {
         barrierX[1] += screenStart;
         barrierPassed1 = false;
-        notifyListeners();
       } else {
         barrierX[1] -= barrierMovement;
 
-        // Check if bird passed this barrier
         if (!barrierPassed1 && barrierX[1] < birdWidth - barrierWidth) {
           if (!birdIsDead()) {
             barrierPassed1 = true;
 
             score++;
-            notifyListeners();
             if (score > topScore) {
               topScore = score;
             }
@@ -84,6 +62,7 @@ class GroupProvider extends ChangeNotifier {
 
       time += 0.032;
     });
+
       notifyListeners();
   }
 
@@ -120,6 +99,27 @@ class GroupProvider extends ChangeNotifier {
       notifyListeners();
 
   }
+  TextEditingController nameController = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+
+  Future<dynamic> addFirebaseMessages() async{
+   FirebaseFirestore.instance.collection('tester').add({
+     'name' : nameController.text,
+     'fullName' :fullNameController.text,
+     'email' : emailController.text,
+     'password' : passwordController.text,
+
+   });
+   Fluttertoast.showToast(msg: "recived data successfully");
+
+  }
+
+
+
+
 
 
 }

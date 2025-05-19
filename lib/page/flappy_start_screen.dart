@@ -1,3 +1,4 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart' show Hive;
@@ -8,6 +9,7 @@ import 'package:shoes/constant/str.dart';
 import 'package:shoes/view_model/group_provider.dart' show GroupProvider;
 import 'package:shoes/widget/fly_bird_screen.dart' show BirdsButtion;
 
+import '../global/dash_screen.dart';
 import '../widget/buttion_widget.dart';
 class FlappyStartScreen extends StatefulWidget {
   const FlappyStartScreen({super.key});
@@ -32,19 +34,24 @@ class _FlappyStartScreenState extends State<FlappyStartScreen> {
           return true;
         },
         child:  Scaffold(
-        body: Container(
-          height: size.height,
-          width: size.width,
-          decoration: backgroundImages(str.images),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: size.height*0.25,),
-              Text("FlappyBird",style: GoogleFonts.roboto(fontWeight: FontWeight.w600,fontSize: 40,color: const Color(0xFFFFFFFF)),),
-              const SizedBox(height: 50,),
-              BirdsButtion( groupProvider.yAxis , groupProvider.birdHeight, groupProvider.birdWidth),
-              _buttion(),
-            ],
+        body: GestureDetector(
+          onTap: (){
+            GameWidget(game: FlappyBirds(),);
+          },
+          child: Container(
+            height: size.height,
+            width: size.width,
+            decoration: backgroundImages(str.images),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: size.height*0.25,),
+                Text("FlappyBird",style: GoogleFonts.roboto(fontWeight: FontWeight.w600,fontSize: 40,color: const Color(0xFFFFFFFF)),),
+                const SizedBox(height: 50,),
+                BirdsButtion( yAxis , birdHeight, birdWidth),
+                _buttion(),
+              ],
+            ),
           ),
         ),
       ),
