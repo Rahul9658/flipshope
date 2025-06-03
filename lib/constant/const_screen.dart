@@ -1,36 +1,9 @@
 
-// SCORE Variables calculated in function [startGame] in [GamePage]
-int score = 0;
-int topScore = 0;
-double time = 0;
-
-/// [Bird] Variables
-double yAxis = 0;
-double birdWidth = 0.183;
-double birdHeight = 0.183;
-
-// Variables to calculate bird movements function [startGame] in [GamePage]
-double height = 0;
-double gravity = -3.5; // How strong the Gravity
-double velocity = 2; // How strong the jump
-double initialHeight = yAxis;
-bool gameHasStarted = false;
-
-//[Barrier] Variables
-// [Barrier] = [Pipes]
-List<double> barrierX = [2, 4]; // spacing = 1.6 units
-//distance b/w obstacles    [2,3.4]
-double barrierWidth = 0.4;
-List<List<double>> barrierHeight = [
-  [0.6, 0.4],
-  [0.4, 0.6],
-];
-double barrierMovement = 0.05;
-
-// Screen Boundary
-double screenEnd = -1.9;
-double screenStart = 3.5;
-
-// / audio
-// final player = AudioPlayer();
-// bool play = true;
+import 'package:flutter/foundation.dart';
+printDebug(object, {String? title}) {
+  if (kDebugMode) {
+    debugPrint(" ---------------------\x1B[35m ${title ?? 'Debug Print Start'} \x1B[0m ------------------------------\x1B[0m\n"
+        "${'\x1B[32m $object\x1B[0m'}"
+        "\n \x1B[36m ----------------------------------------------------------------------\x1B[0m");
+  }
+}

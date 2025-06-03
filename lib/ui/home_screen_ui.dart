@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shoes/ui/shared_preference_data.dart';
+import 'package:shoes/provider/shared_pref_screen.dart';
+import 'package:shoes/sharedpreference/shared_preference_data.dart';
 import 'package:shoes/utils/customeTextfield.dart' show CustomeTextfield;
 import 'package:shoes/utils/custome_container_button.dart' show CustomeButton;
-import 'package:shoes/view_model/shared_pref_screen.dart';
 
 class HomeScreenUi extends StatefulWidget {
   const HomeScreenUi({super.key});

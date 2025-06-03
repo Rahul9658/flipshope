@@ -54,6 +54,8 @@ dependencies:
   path_provider: ^2.1.5
   velocity_x: ^4.3.1
   flame: ^1.28.1
+  form_field_validator: ^1.1.0
+  firebase_database: ^11.3.6
 
 
 

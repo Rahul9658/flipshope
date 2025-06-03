@@ -3,9 +3,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:shoes/view_model/group_provider.dart';
-import 'global/global_auth_page.dart';
-import 'global/notification_services_screen.dart';
+import 'package:shoes/firebase/firebase_notificaion_screen.dart';
+import 'approute/app_route.dart';
+import 'provider/group_provider.dart';
 
 Future<void> firebaseOnBackgroundMessages(RemoteMessage message) async {
   try {
@@ -37,10 +37,10 @@ class MyApp extends StatelessWidget {
         create: (_) => GroupProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-       // initialRoute: appRoutes.splashscreen,
-       //  onGenerateRoute: appRoutes.generateRoute,
+       initialRoute: AppRoutes.splashScreen,
+        onGenerateRoute: AppRoutes.generateRoute,
       //  home: HomeScreenUi(),
-        home:GlobalAuthPage()
+      //   home:SplashScreen()
       ),
 
     );

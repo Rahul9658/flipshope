@@ -1,3 +1,4 @@
+
 class StoreModel {
   int? code;
   String? success;
@@ -51,3 +52,5 @@ class Data {
     return data;
   }
 }
+
+

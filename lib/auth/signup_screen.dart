@@ -2,19 +2,17 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shoes/auth/login_screen.dart';
+import 'package:shoes/provider/auth_provider.dart';
 import 'package:shoes/utils/appcolor.dart';
 import 'package:shoes/utils/customeTextfield.dart';
 import 'package:shoes/utils/custome_container_button.dart';
-import 'package:shoes/view_model/auth_provider.dart';
 
-import '../screen/chat_home_screen.dart';
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -74,7 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
          'name':usernameController.text,
          'email':emailController.text,
       });
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
       return userCredential;
 
     }
@@ -98,10 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
         'createdAt': Timestamp.now(),
       });
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ChatHomeScreen()),
-      );
+
 
       Fluttertoast.showToast(
         msg: "Sign Up Successful",
@@ -164,7 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 120,
                         height: 120,
                       )
-                          : Icon(
+                          : const Icon(
                         Icons.person_outline,
                         size: 60,
                         color: Colors.white70,
