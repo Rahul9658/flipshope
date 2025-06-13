@@ -1,13 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../model/login_model.dart';
 import '../services/app_url.dart';
-
-
 
 Future<LoginModelApi> updateProfileRepo({
   required BuildContext context,
@@ -18,7 +14,7 @@ Future<LoginModelApi> updateProfileRepo({
   required File imageFile,
 }) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
-  Overlay.of(context)!.insert(loader);
+  Overlay.of(context).insert(loader);
   var uri = Uri.parse(ApiUrl.updateProfile);
   var request = http.MultipartRequest('POST', uri);
   final headers = await getAuthHeader(context);

@@ -15,6 +15,7 @@ class NotificationServicesClass {
     );
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
     AndroidNotificationDetails androidNotificationDetails = const AndroidNotificationDetails(
+
       "channel_id",
       "channel_name",
       channelDescription: "channel description",
@@ -36,7 +37,9 @@ class NotificationServicesClass {
         notification++,
         message.notification!.title.toString(),
         message.notification!.body.toString(),
-        notificationDetails
+        message.data['d'],
+        // notificationDetails,
+
 
     );
   }

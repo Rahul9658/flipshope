@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shoes/bottomBar/bottom_navagation_bar.dart';
 import 'package:shoes/ui/fetch_data.dart';
 import 'package:shoes/ui/login_flow_screen.dart' show LoginFlowScreen;
 import 'package:shoes/ui/splash_screen.dart';
@@ -8,6 +9,7 @@ class AppRoutes{
    static const String splashScreen = 'splashScreen';
    static const String loginScreen = 'loginScreen';
    static const String fetchData =  'fetchDataScreen';
+   static const String bottomAppBar = 'bottomAppBar';
    static const String updateProfileScreen = '';
 
       static Route<dynamic> generateRoute(RouteSettings settings){
@@ -21,6 +23,13 @@ class AppRoutes{
            return MaterialPageRoute(builder: (_) => FetchData(email: argument,));
           case updateProfileScreen :
             return MaterialPageRoute(builder: (_) => const UpdateProfileScreen());
+          case bottomAppBar:
+            return MaterialPageRoute(builder: (_) => const BottomNavagationBar());
+
+
+
+
+
          default:
            return CupertinoPageRoute(builder: (_) => UndefinedRouteScreen(routeName: settings.name!));
 

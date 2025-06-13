@@ -40,7 +40,16 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
+
+         <key>CFBundleTypeRole</key>
+         <string>Editor</string>
+         <key>CFBundleURLSchemes</key>
+         <array>
+           <string>com.googleusercontent.apps.YOUR_REVERSED_CLIENT_ID</string>
+         </array>
+
+
+
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

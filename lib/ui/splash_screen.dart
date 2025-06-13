@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
         final authProvider = Provider.of<GroupProvider>(context, listen: false);
         authProvider.saveToken(token);
         printDebug("${token}",title: "Token");
-        Navigator.pushNamed(context, AppRoutes.fetchData);
+        Navigator.pushNamed(context, AppRoutes.bottomAppBar);
       } else {
         Navigator.pushNamed(context, AppRoutes.loginScreen);
       }

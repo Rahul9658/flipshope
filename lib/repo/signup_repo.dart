@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart'as http;
 import 'package:shoes/constant/const_screen.dart';
-import 'package:shoes/model/login_model.dart' show LoginModelApi;
-import 'package:shoes/model/user_model.dart';
+import 'package:shoes/model/login_model.dart';
 import 'package:shoes/services/app_url.dart';
 
   Future<LoginModelApi> signupRepo({name , email, context, password }) async {

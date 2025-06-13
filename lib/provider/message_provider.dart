@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shoes/model/message_model.dart';
+import 'package:shoes/ui/chat_login_screeen.dart';
+import 'package:shoes/ui/chat_messages.dart';
+import 'package:shoes/ui/messages_screen.dart';
 class MessageProvider with ChangeNotifier {
   final FirebaseFirestore _firebaseFirestore =FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -33,4 +36,69 @@ class MessageProvider with ChangeNotifier {
     snapshots();
 
   }
+
+  bool _visiblePassword = true;
+  bool get isvisiblepassword => _visiblePassword;
+
+  void setpassword(){
+    _visiblePassword =!_visiblePassword;
+    notifyListeners();
+  }
+
+
+  TextEditingController messagesController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  ScrollController  scrollController = ScrollController();
+
+  FocusNode focusNode = FocusNode();
+
+  List<ChatMessages> messages = [];
+
+  void sendMessages(){
+    if(messagesController.text.isNotEmpty){
+      messages.add(ChatMessages(messagesController.text, isMe:true));
+      messagesController.clear();
+       scrollController.animateTo(
+           scrollController.position.maxScrollExtent,
+           duration:const Duration(milliseconds: 300),
+           curve: Curves.easeIn);
+      notifyListeners();
+    }
+  }
+
+  Future <void> loginFirebase(BuildContext context) async{
+    FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
+    ).then((value){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const MessagesScreen()));
+    });
+
+  }
+
+  Future <void> signupFirebase(BuildContext context) async{
+    FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
+    ).then((value){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const ChatLoginScreeen()));
+    });
+
+  }
+
+
+
+
+  @override
+  void dispose(){
+    messagesController.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
+
+
+
+
+
 }

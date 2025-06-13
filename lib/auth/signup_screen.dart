@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,6 +61,15 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     }
   }
+
+
+
+
+
+
+
+
+
  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   Future<UserCredential> registerbody()async{
@@ -127,6 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProviderdddd>(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){},child: Icon(Icons.add),),
       appBar: AppBar(
         title: Text("Signup Page",style: GoogleFonts.roboto(fontSize: 18,fontWeight: FontWeight.w600,color: AppColor.white),),
         toolbarHeight: 70,

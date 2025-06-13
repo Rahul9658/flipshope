@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
+import 'package:shoes/bottomBar/bottom_navagation_bar.dart';
+import 'package:shoes/constant/const_screen.dart';
 import 'package:shoes/provider/group_provider.dart';
+import 'package:shoes/repo/google_sign_repo.dart';
 import 'package:shoes/utils/customeTextfield.dart';
 import 'package:shoes/utils/custome_container_button.dart';
 class LoginFlowScreen extends StatefulWidget {
@@ -13,17 +18,29 @@ class LoginFlowScreen extends StatefulWidget {
 
 class _LoginFlowScreenState extends State<LoginFlowScreen> {
   final formKey = GlobalKey<FormState>();
+  Future<void> reailTimeDatabase() async{
+    final database = FirebaseDatabase.instance.ref('post');
+    database.set({
 
+
+     });
+
+  }
   @override
   Widget build(BuildContext context) {
     final groupProvider = Provider.of<GroupProvider>(context);
     return  Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        // database.set({
+        //   "id":groupProvider.emailController.text,
+        // });
+      },child: Icon(Icons.search_rounded),),
       appBar: AppBar(
         title: Text("Login Flow All Screen"),
         backgroundColor: Color(0xFF2D63DF),
         toolbarHeight: 70,
       ),
-       body: Form(
+      body: Form(
         key: formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -44,20 +61,20 @@ class _LoginFlowScreenState extends State<LoginFlowScreen> {
                 CustomeTextfield(
                   hintText: 'please enter password',
                   controller: groupProvider.passwordController,
-                  // validator: MultiValidator([
-                  //   RequiredValidator(errorText: 'password is required'),
-                  //   MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
-                  //   PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-                  //       errorText: 'passwords must have at least one special character')
-                  // ])  ,
+                  validator: MultiValidator([
+                    RequiredValidator(errorText: 'password is required'),
+                    MinLengthValidator(2, errorText: 'password must be at least 2 digits long'),
+                    // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+                    //     errorText: 'passwords must have at least one special character')
+                  ])  ,
                 ),
-                SizedBox(height: 20,),
-                TextFormField(
-                  maxLines: 5,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                // SizedBox(height: 20,),
+                // TextFormField(
+                //   maxLines: 5,
+                //   decoration: const InputDecoration(
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
                 SizedBox(height: 30,),
                 GestureDetector(
                   onTap: (){
@@ -74,6 +91,17 @@ class _LoginFlowScreenState extends State<LoginFlowScreen> {
                       18,color: Colors.white),)),
                   ),
                 ),
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      UserCredential user = await signInWithGoogle();
+                      printDebug("User signed in: ${user.user?.displayName}");
+                    } catch (e) {
+                      printDebug("Error: $e");
+                    }
+                  },
+                  child: Text("Sign in with Google"),
+                )
 
               ],
             ),

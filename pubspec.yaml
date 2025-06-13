@@ -56,6 +56,9 @@ dependencies:
   flame: ^1.28.1
   form_field_validator: ^1.1.0
   firebase_database: ^11.3.6
+  fade_shimmer: ^2.4.0
+  shimmer: ^3.0.0
+  google_sign_in: ^6.3.0
 
 
 
